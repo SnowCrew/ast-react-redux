@@ -1,0 +1,21 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 50px;
+
+  background-color: rgb(191, 246, 246);
+
+  margin-bottom: 25px;
+}
+.nav-link {
+  margin: 0 25px;
+}
+
+.nav-cart {
+  width: 20px;
+  margin-right: 10px;
+  /* fill: rgb(190, 20, 20); */
+}

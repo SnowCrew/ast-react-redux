@@ -2,16 +2,23 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux';
+import store from './redux/store/store';
+import AstServiceContext from './context/ast-service-context';
+import { BrowserRouter } from 'react-router-dom';
+import AstService from './services/ast-shop-service';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const astService = new AstService();
+
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store} >
+      <AstServiceContext.Provider value={astService} >
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AstServiceContext.Provider>
+    </Provider>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
