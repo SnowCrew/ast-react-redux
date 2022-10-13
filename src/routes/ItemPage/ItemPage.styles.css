@@ -1,16 +1,21 @@
 .item_page {
   display: flex;
-  width: 100%;
-  height: 100vh;
+
+  max-width: 100vw;
+  height: 100%;
+
+  margin-bottom: 50px;
 }
-.item_block {
+.item-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
   margin: auto;
   width: 500px;
-  height: 650px;
-  /* background-color: rgba(84, 84, 84, 0.8); */
 }
 
-.menu__img1 {
+.item-page-img {
   width: 500px;
   height: 450px;
   transform: translateX(-20px);
@@ -30,4 +35,24 @@
   background-position: 50%;
   background-size: cover;
   background-repeat: no-repeat;
+}
+.item-page-title {
+  text-align: center;
+
+  font-weight: bold;
+
+  margin-bottom: 10px;
+}
+
+.item-page-quantitiy-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.quantity-label {
+  margin-right: 5px;
+}
+
+.textarea {
+  resize: none;
 }

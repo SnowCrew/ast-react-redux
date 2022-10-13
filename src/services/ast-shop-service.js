@@ -20,4 +20,7 @@ export default class AstService {
     return await this.getResource(`/products/${id}`)
 
   }
+  async getAllUsers() {
+    return await this.getResource('/users')
+  }
 }

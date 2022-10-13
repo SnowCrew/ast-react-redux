@@ -1,9 +1,9 @@
 import "./Navigation.styles.css";
 import { Link, Outlet } from "react-router-dom";
 import CartIcon from "./shopping-cart-solid.svg";
-import { connect } from "react-redux";
+import AuthComponent from "../../components/Auth/Auth.component";
 
-const Navigation = ({ total }) => {
+const Navigation = () => {
   return (
     <>
       <div className="header">
@@ -15,20 +15,11 @@ const Navigation = ({ total }) => {
             О магазине
           </Link>
         </div>
-        <Link className="nav-link" to="cart">
-          <img className="nav-cart" src={CartIcon} alt="cart"></img>
-          Total: {total} $
-        </Link>
+        <AuthComponent CartIcon={CartIcon} />
       </div>
       <Outlet />
     </>
   );
 };
 
-const mapStateToProps = ({ total }) => {
-  return {
-    total,
-  };
-};
-
-export default connect(mapStateToProps)(Navigation);
+export default Navigation;

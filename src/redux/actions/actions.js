@@ -17,10 +17,10 @@ const menuError = () => {
   }
 };
 
-const onAddToCart = (id) => {
+const onAddToCart = (id, quantity = 1) => {
   return {
     type: "ITEM_ADD_TO_CART",
-    payload: id
+    payload: [id, quantity]
   };
 };
 
@@ -37,11 +37,46 @@ const completeOrder = () => {
   }
 };
 
+const getAuthRequest = () => {
+  return {
+    type: "GET_AUTH_REQUEST"
+  }
+}
+
+const getAuth = () => {
+  return {
+    type: "GET_AUTH"
+  }
+}
+
+const getAuthAdmin = () => {
+  return {
+    type: "GET_ADMIN_AUTH"
+  }
+}
+
+const getAuthReject = () => {
+  return {
+    type: "GET_AUTH_REJECT"
+  }
+}
+
+const exitAuth = () => {
+  return {
+    type: "EXIT_AUTH"
+  }
+}
+
 export {
   menuLoaded,
   menuRequested,
   menuError,
   onAddToCart,
   deleteFromCart,
-  completeOrder
+  completeOrder,
+  getAuthRequest,
+  getAuth,
+  getAuthReject,
+  exitAuth,
+  getAuthAdmin
 };

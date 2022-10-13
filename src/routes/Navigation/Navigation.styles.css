@@ -12,6 +12,8 @@
 }
 .nav-link {
   margin: 0 25px;
+  text-decoration: none;
+  color: black;
 }
 
 .nav-cart {

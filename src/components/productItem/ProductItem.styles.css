@@ -5,9 +5,10 @@
   box-shadow: 5px 5px 45px rgba(256, 256, 256, 0.1);
   border-radius: 8px;
   padding: 20px;
-  margin-right: 40px;
+  margin-right: 20px;
   margin-bottom: 40px;
   overflow: hidden;
+  text-decoration: none;
 }
 
 .menu__img {
@@ -24,6 +25,7 @@
   white-space: nowrap; /* paragraph to one line */
   overflow: hidden; /* older browsers */
   transform: translateX(-20px);
+  color: black;
 }
 
 .menu__category,
@@ -36,4 +38,8 @@
 .menu__category,
 .menu__price > span {
   font-weight: 700;
+}
+
+.link {
+  text-decoration: none;
 }

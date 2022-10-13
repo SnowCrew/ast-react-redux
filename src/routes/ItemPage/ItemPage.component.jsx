@@ -5,13 +5,15 @@ import {
   menuError,
   onAddToCart,
 } from "../../redux/actions/actions";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import "./ItemPage.styles.css";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import WithAstService from "../../hoc/with-ast-service.hoc";
 import Loading from "../../components/Loading/Loading.component";
+import ItemPageAdmin from "./ItemPageAdmin.component";
 
 const ItemPage = (props) => {
+  const quantityInputRef = useRef();
   const paramId = useParams().id;
 
   const {
@@ -21,6 +23,9 @@ const ItemPage = (props) => {
     menuRequested,
     products,
     loading,
+    onAddToCart,
+    auth,
+    admin,
   } = props;
 
   useEffect(() => {
@@ -28,50 +33,64 @@ const ItemPage = (props) => {
       menuRequested();
 
       AstService.getAllProducts()
-        .then((res) => props.menuLoaded(res))
+        .then((res) => menuLoaded(res))
         .catch((err) => menuError());
     }
-  }, [
-    AstService,
-    menuError,
-    menuLoaded,
-    menuRequested,
-    products.length,
-    props,
-  ]);
+  }, [AstService, menuError, menuLoaded, menuRequested, products.length]);
 
-  const Spinner = loading ? (
+  const item = products.find((el) => +el.id === +paramId);
+  const { title, image, category, price, id, description } = item;
+
+  const content = loading ? (
     <div className="item_page">
       <Loading />
     </div>
-  ) : null;
-  const item = props.products.find((el) => +el.id === +paramId);
-  const { title, image, category, price, id } = item;
-
-  return (
-    <>
-      {Spinner}
-      <div className="item_page">
-        <div className="menu__item item_block">
-          <div className="menu__title">{title}</div>
-          <img className="menu__img1" src={image} alt={title}></img>
-          <div className="menu__category">
-            Category: <span>{category}</span>
-          </div>
-          <div className="menu__price">
-            Price: <span>{price}$</span>
-          </div>
-          <button onClick={() => onAddToCart(id)} className="menu__btn">
-            Add to cart
-          </button>
-          <Link to={`/`}>
-            <button className="menu__btn">Back</button>
-          </Link>
-          <span className={`menu__category_Img ${category}`}></span>
+  ) : admin ? (
+    <ItemPageAdmin
+      item={item}
+      onAddToCart={onAddToCart}
+      quantityInputRef={quantityInputRef}
+    />
+  ) : (
+    <div className="item_page">
+      <div className="item-block">
+        <div className="item-page-title">{title}</div>
+        <img className="item-page-img" src={image} alt={title}></img>
+        <div> {description}</div>
+        <div className="menu__category">
+          Category: <span>{category}</span>
         </div>
+        <div className="menu__price">
+          Price: <span>{price}$</span>
+        </div>
+
+        {auth ? (
+          <>
+            <div className="item-page-quantitiy-container">
+              <div>
+                <label className="quantity-label">Количество:</label>
+                <input
+                  type={"number"}
+                  ref={quantityInputRef}
+                  placeholder={"Количество товаров"}
+                />
+              </div>
+              <button
+                onClick={() => onAddToCart(id, quantityInputRef.current.value)}
+                className="item-page-btn"
+              >
+                Добавить в корзину
+              </button>
+            </div>
+          </>
+        ) : (
+          "Чтобы добавить товар в корзину залогинтесь"
+        )}
       </div>
-    </>
+    </div>
   );
+
+  return <>{content}</>;
 };
 
 const mapStateToProps = (state) => {
@@ -79,6 +98,8 @@ const mapStateToProps = (state) => {
     products: state.products,
     loading: state.loading,
     error: state.error,
+    auth: state.auth,
+    admin: state.admin,
   };
 };
 

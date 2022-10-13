@@ -1,11 +1,12 @@
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import "./ProductItem.styles.css";
 
-const ProductItem = ({ product, onAddToCart }) => {
+const ProductItem = ({ product, onAddToCart, auth }) => {
   const { id, image, title, category, price } = product;
   return (
     <li className="menu__item">
-      <Link to={`${id}`}>
+      <Link className="link" to={`${id}`}>
         <p className="menu__title"> {title} </p>
       </Link>
 
@@ -16,11 +17,20 @@ const ProductItem = ({ product, onAddToCart }) => {
       <div className="menu__price">
         Price: <span>{price}$</span>
       </div>
-      <button onClick={() => onAddToCart(id)} className="menu__btn">
-        Add to cart
-      </button>
+      {auth ? (
+        <button onClick={() => onAddToCart(id)} className="menu__btn">
+          Add to cart
+        </button>
+      ) : (
+        "Чтобы добавить товар в корзину залогинтесь"
+      )}
     </li>
   );
 };
+const mapStateToProps = ({ auth }) => {
+  return {
+    auth,
+  };
+};
 
-export default ProductItem;
+export default connect(mapStateToProps, null)(ProductItem);

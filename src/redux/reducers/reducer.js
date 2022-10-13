@@ -5,7 +5,9 @@ const initialState = {
   loading: true,
   error: false,
   itemsInCart: [],
-  total: 0
+  total: 0,
+  auth: false,
+  admin: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -32,15 +34,14 @@ const reducer = (state = initialState, action) => {
         error: true
       };
     case "ITEM_ADD_TO_CART":
-      const id = action.payload;
-
+      const [id, quantity] = action.payload;
       const itemInd = state.itemsInCart.findIndex(item => item.id === id);
 
       if (itemInd >= 0) {
         const elemInState = state.itemsInCart.find(item => item.id === id);
         const newElem = {
           ...elemInState,
-          counterIdentical: ++elemInState.counterIdentical
+          counterIdentical: (Number(elemInState.counterIdentical) + Number(quantity))
         }
         return {
           ...state,
@@ -49,7 +50,7 @@ const reducer = (state = initialState, action) => {
             newElem,
             ...state.itemsInCart.slice(itemInd + 1)
           ],
-          total: (Number(state.total) + Number(newElem.price)).toFixed(2)
+          total: ((Number(state.total) + (Number(newElem.price) * Number(quantity))).toFixed(2))
         }
       }
 
@@ -59,7 +60,7 @@ const reducer = (state = initialState, action) => {
         price: item.price,
         image: item.image,
         id: item.id,
-        counterIdentical: 1,
+        counterIdentical: (Number(quantity)),
       }
       return {
         ...state,
@@ -67,7 +68,7 @@ const reducer = (state = initialState, action) => {
           ...state.itemsInCart,
           newItem
         ],
-        total: (Number(state.total) + Number(newItem.price)).toFixed(2)
+        total: (Number(state.total) + (Number(newItem.price) * Number(quantity))).toFixed(2)
       };
 
     case "ITEM_REMOVE_FROM_CART":
@@ -80,12 +81,46 @@ const reducer = (state = initialState, action) => {
           ...state.itemsInCart.slice(0, itemIndex),
           ...state.itemsInCart.slice(itemIndex + 1)
         ],
-        total: state.total - (itemDel.price * itemDel.counterIdentical)
+        total: (state.total - (itemDel.price * itemDel.counterIdentical)).toFixed(2)
+      };
+
+    case "GET_AUTH_REQUEST":
+      return {
+        ...state,
+        loading: true
+      };
+
+    case "GET_AUTH":
+      return {
+        ...state,
+        auth: true,
+        loading: false
+      };
+
+    case "GET_ADMIN_AUTH":
+      return {
+        ...state,
+        auth: true,
+        loading: false,
+        admin: true
+      };
+
+    case "GET_AUTH_REJECT":
+      return {
+        ...state,
+        loading: false
+      };
+
+    case "EXIT_AUTH":
+      return {
+        ...state,
+        auth: false,
+        admin: false
       };
 
     default:
       return state;
-  }
-}
+  };
+};
 
 export default reducer;

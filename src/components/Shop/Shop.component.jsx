@@ -12,8 +12,6 @@ import "./Shop.styles.css";
 import Loading from "../Loading/Loading.component";
 
 const Shop = (props) => {
-  // console.log(props.itemsInCart);
-
   const {
     menuLoaded,
     menuError,
@@ -56,6 +54,7 @@ const mapStateToProps = (state) => {
     products: state.products,
     loading: state.loading,
     error: state.error,
+    itemsInCart: state.itemsInCart,
   };
 };
 
