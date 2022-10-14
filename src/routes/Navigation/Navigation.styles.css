@@ -1,0 +1,27 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 25px;
+
+  height: 50px;
+
+  background-color: rgb(191, 246, 246);
+}
+.nav-link {
+  margin: 0 25px;
+  text-decoration: none;
+  color: black;
+}
+
+.nav-cart {
+  width: 20px;
+  margin-right: 10px;
+  /* fill: rgb(190, 20, 20); */
+}

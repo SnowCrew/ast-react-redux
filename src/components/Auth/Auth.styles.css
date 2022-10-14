@@ -1,0 +1,28 @@
+.auth-block {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-right: 25px;
+}
+.auth-modal-block {
+  display: flex;
+  flex-direction: column;
+}
+.auth-title {
+  text-align: center;
+  justify-content: start;
+}
+.auth-label {
+  margin: 5px 0;
+  font-weight: bold;
+}
+.auth-btn {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.enter-exit-span {
+  user-select: none;
+  cursor: pointer;
+}

@@ -1,0 +1,47 @@
+.item_page {
+  display: flex;
+
+  max-width: 100vw;
+  height: 100%;
+
+  margin-bottom: 50px;
+}
+.item-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  margin: auto;
+  width: 500px;
+}
+
+.item-page-img {
+  max-width: 70vw;
+
+  transform: translateX(-20px);
+  margin-bottom: 20px;
+}
+
+.menu__item {
+  position: relative;
+}
+.item-page-title {
+  text-align: center;
+
+  font-weight: bold;
+
+  margin-bottom: 10px;
+}
+
+.item-page-quantitiy-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.quantity-label {
+  margin-right: 5px;
+}
+
+.textarea {
+  resize: none;
+}
