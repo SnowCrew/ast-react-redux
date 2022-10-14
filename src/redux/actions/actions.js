@@ -31,6 +31,12 @@ const deleteFromCart = (id) => {
   };
 };
 
+const clearCart = () => {
+  return {
+    type: "CLEAR_CART"
+  }
+}
+
 const completeOrder = () => {
   return {
     type: "ORDER_COMPLETED",
@@ -78,5 +84,6 @@ export {
   getAuth,
   getAuthReject,
   exitAuth,
-  getAuthAdmin
+  getAuthAdmin,
+  clearCart
 };

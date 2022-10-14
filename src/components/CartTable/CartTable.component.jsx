@@ -1,8 +1,16 @@
 import "./CartTable.styles.css";
 import { connect } from "react-redux";
-import { deleteFromCart } from "../../redux/actions/actions";
+import {
+  deleteFromCart,
+  onAddToCart,
+  clearCart,
+} from "../../redux/actions/actions";
 
-const CartTable = ({ itemsInCart, deleteFromCart }) => {
+const CartTable = ({ itemsInCart, deleteFromCart, onAddToCart, clearCart }) => {
+  const handleClearCart = () => {
+    clearCart();
+  };
+
   if (itemsInCart.length === 0) {
     return <div className="cart__title">Ваша корзина пуста!</div>;
   } else {
@@ -11,33 +19,52 @@ const CartTable = ({ itemsInCart, deleteFromCart }) => {
         <div className="cart__title">Ваш заказ:</div>
         <div className="cart__list">
           {itemsInCart.map((item) => {
-            const { title, price, image, id, counterIdentical } = item;
+            const { title, price, id, counterIdentical } = item;
+            const handleAddCounter = () => {
+              onAddToCart(item.id);
+            };
+            const handleRemoveCounter = () => {
+              if (counterIdentical === 1) {
+                deleteFromCart(item.id);
+                return;
+              }
+              onAddToCart(item.id, -1);
+            };
             return (
               <div key={id} className="cart__item">
-                <img src={image} className="cart__item-img" alt={title}></img>
-                <div className="cart-title-quant-box">
-                  <div className="cart__item-title">{title}</div>
-                  <div className="cart__item-counter">
-                    Количество: {counterIdentical}
-                  </div>
-                </div>
-                <div className="cart-item-total-del-box">
-                  <div className="cart__item-price">
-                    Total: {counterIdentical * price}$
-                  </div>
-                  <div
-                    onClick={() => deleteFromCart(id)}
-                    className="cart__close"
+                <div>{id}</div>
+                <div className="cart__item-title">{title}</div>
+                <div className="cart__item-price">{price}$</div>
+                <div className="cart__item-counter">
+                  <button
+                    className="cart__item-counter-btn"
+                    onClick={handleAddCounter}
                   >
-                    &times;
+                    +
+                  </button>
+                  <div className="cart__item-counter-count">
+                    {counterIdentical}
                   </div>
+                  <button
+                    className="cart__item-counter-btn minus"
+                    onClick={handleRemoveCounter}
+                  >
+                    -
+                  </button>
+                </div>
+                <div className="cart__item-price">
+                  Total: {(counterIdentical * price).toFixed(2)}$
+                </div>
+                <div onClick={() => deleteFromCart(id)} className="cart__close">
+                  &times;
                 </div>
               </div>
             );
           })}
-          <button variant="secondary" className="cart__btn" disabled>
+          <button className="cart__btn" disabled>
             Оплатить
           </button>
+          <button onClick={handleClearCart}>Очистить корзину</button>
         </div>
       </div>
     );
@@ -52,6 +79,8 @@ const mapStateToProps = ({ itemsInCart }) => {
 
 const mapDispatchToProps = {
   deleteFromCart,
+  onAddToCart,
+  clearCart,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartTable);

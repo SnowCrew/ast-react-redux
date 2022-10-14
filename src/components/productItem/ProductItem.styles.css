@@ -40,6 +40,10 @@
   font-weight: 700;
 }
 
+.menu__category {
+  height: 50px;
+}
+
 .link {
   text-decoration: none;
 }

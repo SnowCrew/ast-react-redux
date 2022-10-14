@@ -6,6 +6,7 @@ const initialState = {
   error: false,
   itemsInCart: [],
   total: 0,
+  totalQuantity: 0,
   auth: false,
   admin: false
 };
@@ -41,7 +42,7 @@ const reducer = (state = initialState, action) => {
         const elemInState = state.itemsInCart.find(item => item.id === id);
         const newElem = {
           ...elemInState,
-          counterIdentical: (Number(elemInState.counterIdentical) + Number(quantity))
+          counterIdentical: (Number(elemInState.counterIdentical) + Number(quantity)),
         }
         return {
           ...state,
@@ -50,7 +51,8 @@ const reducer = (state = initialState, action) => {
             newElem,
             ...state.itemsInCart.slice(itemInd + 1)
           ],
-          total: ((Number(state.total) + (Number(newElem.price) * Number(quantity))).toFixed(2))
+          total: ((Number(state.total) + (Number(newElem.price) * Number(quantity))).toFixed(2)),
+          totalQuantity: Number(state.totalQuantity) + Number(quantity)
         }
       }
 
@@ -60,7 +62,8 @@ const reducer = (state = initialState, action) => {
         price: item.price,
         image: item.image,
         id: item.id,
-        counterIdentical: (Number(quantity)),
+        counterIdentical: Number(quantity),
+        totalQuantity: Number(quantity)
       }
       return {
         ...state,
@@ -68,7 +71,8 @@ const reducer = (state = initialState, action) => {
           ...state.itemsInCart,
           newItem
         ],
-        total: (Number(state.total) + (Number(newItem.price) * Number(quantity))).toFixed(2)
+        total: (Number(state.total) + (Number(newItem.price) * Number(quantity))).toFixed(2),
+        totalQuantity: Number(state.totalQuantity) + Number(quantity)
       };
 
     case "ITEM_REMOVE_FROM_CART":
@@ -81,8 +85,17 @@ const reducer = (state = initialState, action) => {
           ...state.itemsInCart.slice(0, itemIndex),
           ...state.itemsInCart.slice(itemIndex + 1)
         ],
-        total: (state.total - (itemDel.price * itemDel.counterIdentical)).toFixed(2)
+        total: (state.total - (itemDel.price * itemDel.counterIdentical)).toFixed(2),
+        totalQuantity: Number(state.totalQuantity) - itemDel.counterIdentical
       };
+
+    case "CLEAR_CART":
+      return {
+        ...state,
+        itemsInCart: [],
+        total: 0,
+        totalQuantity: 0
+      }
 
     case "GET_AUTH_REQUEST":
       return {

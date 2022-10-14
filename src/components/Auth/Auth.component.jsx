@@ -25,6 +25,7 @@ const Auth = ({
   exitAuth,
   loading,
   getAuthAdmin,
+  totalQuantity,
 }) => {
   const [activeModalAuth, setActiveModalAuth] = useState(false);
   const loginRef = useRef();
@@ -123,7 +124,13 @@ const Auth = ({
     <>
       <Link className="nav-link" to="cart">
         <img className="nav-cart" src={CartIcon} alt="cart"></img>
-        Total: {total} $
+        {totalQuantity === 0 ? (
+          "Ваша корзина пуста"
+        ) : (
+          <span>
+            В корзине {totalQuantity}шт товаров на сумму {total}$
+          </span>
+        )}
       </Link>
       <span className="enter-exit-span" onClick={handleExitAuth}>
         Выход
@@ -134,12 +141,13 @@ const Auth = ({
   return <div className="auth-block">{content}</div>;
 };
 
-const mapStateToProps = ({ total, auth, loading, admin }) => {
+const mapStateToProps = ({ total, auth, loading, admin, totalQuantity }) => {
   return {
     total,
     auth,
     loading,
     admin,
+    totalQuantity,
   };
 };
 const mapDispatchToProps = {

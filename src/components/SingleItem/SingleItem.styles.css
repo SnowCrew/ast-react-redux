@@ -16,25 +16,14 @@
 }
 
 .item-page-img {
-  width: 500px;
-  height: 450px;
+  max-width: 70vw;
+
   transform: translateX(-20px);
   margin-bottom: 20px;
 }
 
 .menu__item {
   position: relative;
-}
-.menu__category_Img {
-  position: absolute;
-  content: "";
-  bottom: 20px;
-  right: 20px;
-  width: 75px;
-  height: 75px;
-  background-position: 50%;
-  background-size: cover;
-  background-repeat: no-repeat;
 }
 .item-page-title {
   text-align: center;

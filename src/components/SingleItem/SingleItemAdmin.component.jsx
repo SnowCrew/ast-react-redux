@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Loading from "../../components/Loading/Loading.component";
 
-const ItemPageAdmin = ({ item, onAddToCart, quantityInputRef }) => {
+const SingleItemAdmin = ({ item, onAddToCart, quantityInputRef }) => {
   const { title, image, category, price, id, description } = item;
 
   const [adminStatus, setAdminStatus] = useState(false);
@@ -121,4 +121,4 @@ const ItemPageAdmin = ({ item, onAddToCart, quantityInputRef }) => {
   );
 };
 
-export default ItemPageAdmin;
+export default SingleItemAdmin;
