@@ -6,7 +6,13 @@ import {
   clearCart,
 } from "../../redux/actions/actions";
 
-const CartTable = ({ itemsInCart, deleteFromCart, onAddToCart, clearCart }) => {
+const CartTable = ({
+  itemsInCart,
+  deleteFromCart,
+  onAddToCart,
+  clearCart,
+  total,
+}) => {
   const handleClearCart = () => {
     clearCart();
   };
@@ -61,6 +67,7 @@ const CartTable = ({ itemsInCart, deleteFromCart, onAddToCart, clearCart }) => {
               </div>
             );
           })}
+          <div className="cart-total-money">Сумма за все товары : {total}$</div>
           <button className="cart__btn" disabled>
             Оплатить
           </button>
@@ -71,9 +78,10 @@ const CartTable = ({ itemsInCart, deleteFromCart, onAddToCart, clearCart }) => {
   }
 };
 
-const mapStateToProps = ({ itemsInCart }) => {
+const mapStateToProps = ({ itemsInCart, total }) => {
   return {
     itemsInCart,
+    total,
   };
 };
 

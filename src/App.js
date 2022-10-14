@@ -12,6 +12,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Navigation />}>
         <Route index element={<Home />} />
+        <Route path='/ast-react-redux' element={<Home />} />
         <Route path='about' element={<About />} />
         <Route path=':id' element={<ItemPage />} />
         <Route path='cart' element={<CartPage />} />
