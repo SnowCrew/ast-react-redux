@@ -1,9 +1,9 @@
 //https://fakestoreapi.com/docs
 
 export default class AstService {
-  _apiBase = "https://fakestoreapi.com";
+  _apiBase:string = "https://fakestoreapi.com";
 
-  async getResource(url) {
+  async getResource(url:string) {
     const res = await fetch(`${this._apiBase}${url}`);
 
     if (!res.ok) {
@@ -16,7 +16,7 @@ export default class AstService {
     return await this.getResource('/products')
 
   }
-  async getSingleProduct(id) {
+  async getSingleProduct(id: number) {
     return await this.getResource(`/products/${id}`)
 
   }

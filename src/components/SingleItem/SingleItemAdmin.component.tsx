@@ -1,7 +1,16 @@
 import { useState } from "react";
-import Loading from "../../components/Loading/Loading.component";
+import {  onAddToCart } from '../../redux/actions/actions';
+import { IProduct } from '../../redux/reducers/reducer';
+import Loading from "../Loading/Loading.component";
 
-const SingleItemAdmin = ({ item, onAddToCart, quantityInputRef }) => {
+
+interface Props {
+  item:IProduct,
+  quantityInputRef: React.RefObject<HTMLInputElement>,
+  onAddToCart: typeof onAddToCart
+}
+
+const SingleItemAdmin = ({ item, onAddToCart, quantityInputRef }:Props) => {
   const { title, image, category, price, id, description } = item;
 
   const [adminStatus, setAdminStatus] = useState(false);
@@ -13,7 +22,7 @@ const SingleItemAdmin = ({ item, onAddToCart, quantityInputRef }) => {
   const [descriptionError, setDescriptionError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const helperSendDataToServer = async (title, description) => {
+  const helperSendDataToServer = async (title:string, description: string) => {
     setLoading(true);
     await fetch(`https://fakestoreapi.com/products/${id}`, {
       method: "PATCH",
@@ -70,6 +79,7 @@ const SingleItemAdmin = ({ item, onAddToCart, quantityInputRef }) => {
               value={adminTitle}
               onChange={(e) => setAdminTitle(e.target.value)}
             />
+            <label>Number of characters: {adminTitle.length}/30</label>
             {titleError ? <label>{titleError}</label> : null}
           </>
         ) : (
@@ -81,7 +91,7 @@ const SingleItemAdmin = ({ item, onAddToCart, quantityInputRef }) => {
             <textarea
               className="textarea"
               maxLength={600}
-              rows="7"
+              rows={7}
               value={adminDescription}
               onChange={(e) => setAdminDiscription(e.target.value)}
             />
@@ -109,7 +119,7 @@ const SingleItemAdmin = ({ item, onAddToCart, quantityInputRef }) => {
               />
             </div>
             <button
-              onClick={() => onAddToCart(id, quantityInputRef.current.value)}
+              onClick={() => onAddToCart(id, Number(quantityInputRef.current?.value))}
               className="item-page-btn"
             >
               Добавить в корзину

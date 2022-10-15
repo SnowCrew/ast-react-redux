@@ -1,8 +1,16 @@
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import { Link } from "react-router-dom";
+import { IProduct, IStore } from '../../redux/reducers/reducer';
 import "./ProductItem.styles.css";
 
-const ProductItem = ({ product, onAddToCart, auth }) => {
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+interface Props extends PropsFromRedux{
+  product:IProduct
+  onAddToCart:(props:number) => void;
+}
+
+const ProductItem = ({ product, onAddToCart, auth }:Props) => {
   const { id, image, title, category, price } = product;
   return (
     <li className="menu__item">
@@ -27,10 +35,13 @@ const ProductItem = ({ product, onAddToCart, auth }) => {
     </li>
   );
 };
-const mapStateToProps = ({ auth }) => {
+const mapStateToProps = ({ auth }:IStore) => {
   return {
     auth,
   };
 };
 
-export default connect(mapStateToProps, null)(ProductItem);
+const connector = connect(mapStateToProps)
+
+
+export default connector(ProductItem);

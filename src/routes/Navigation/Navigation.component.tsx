@@ -1,7 +1,7 @@
 import "./Navigation.styles.css";
 import { Link, Outlet } from "react-router-dom";
 import CartIcon from "./shopping-cart-solid.svg";
-import AuthComponent from "../../components/Auth/Auth.component";
+import Auth from "../../components/Auth/Auth.component";
 
 const Navigation = () => {
   return (
@@ -15,7 +15,7 @@ const Navigation = () => {
             О магазине
           </Link>
         </div>
-        <AuthComponent CartIcon={CartIcon} />
+        <Auth CartIcon={CartIcon} />
       </div>
       <Outlet />
     </>

@@ -1,4 +1,11 @@
-const menuLoaded = (newMenu) => {
+import { IProduct } from '../reducers/reducer';
+
+export interface IAction {
+  type:string,
+  payload?: IProduct[]|[number, number]|number
+}
+
+const menuLoaded = (newMenu:IProduct[]):IAction => {
   return {
     type: "MENU_LOADED",
     payload: newMenu
@@ -17,14 +24,14 @@ const menuError = () => {
   }
 };
 
-const onAddToCart = (id, quantity = 1) => {
+const onAddToCart = (id:number, quantity:number = 1) => {
   return {
     type: "ITEM_ADD_TO_CART",
     payload: [id, quantity]
   };
 };
 
-const deleteFromCart = (id) => {
+const deleteFromCart = (id:number) => {
   return {
     type: "ITEM_REMOVE_FROM_CART",
     payload: id

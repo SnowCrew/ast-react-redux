@@ -1,10 +1,14 @@
 import "./CartTable.styles.css";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import {
   deleteFromCart,
   onAddToCart,
   clearCart,
 } from "../../redux/actions/actions";
+import { IStore } from '../../redux/reducers/reducer';
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
 
 const CartTable = ({
   itemsInCart,
@@ -12,7 +16,8 @@ const CartTable = ({
   onAddToCart,
   clearCart,
   total,
-}) => {
+  }:PropsFromRedux) => {
+
   const handleClearCart = () => {
     clearCart();
   };
@@ -36,6 +41,7 @@ const CartTable = ({
               }
               onAddToCart(item.id, -1);
             };
+
             return (
               <div key={id} className="cart__item">
                 <div>{id}</div>
@@ -78,7 +84,7 @@ const CartTable = ({
   }
 };
 
-const mapStateToProps = ({ itemsInCart, total }) => {
+const mapStateToProps = ({ itemsInCart, total }:IStore) => {
   return {
     itemsInCart,
     total,
@@ -91,4 +97,7 @@ const mapDispatchToProps = {
   clearCart,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CartTable);
+const connector = connect(mapStateToProps,mapDispatchToProps)
+
+
+export default connector(CartTable);
