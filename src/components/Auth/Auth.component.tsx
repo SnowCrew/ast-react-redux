@@ -16,13 +16,7 @@ import Loading from "../Loading/Loading.component";
 import { IStore } from '../../redux/reducers/reducer';
 import AstService from '../../services/ast-shop-service';
 
-interface ILogAndPass {
-  email: string,
-  password: string
-}
-
 type PropsFromRedux = ConnectedProps<typeof connector>;
-
 
 interface Props extends PropsFromRedux{
   AstService:AstService,
@@ -60,7 +54,7 @@ const Auth = ({
 
     //users
     const users = await AstService.getAllUsers();
-    const auth:boolean = users.some((item:ILogAndPass) => {
+    const auth = users.some((item) => {
       if (
         item.email === loginRef.current?.value &&
         item.password === passRef.current?.value

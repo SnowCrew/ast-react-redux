@@ -1,9 +1,18 @@
 //https://fakestoreapi.com/docs
 
+import { IProduct } from '../redux/reducers/reducer';
+
+export interface IUser{
+  id:number,
+  email:string,
+  username:string,
+  password:string
+};
+
 export default class AstService {
   _apiBase:string = "https://fakestoreapi.com";
 
-  async getResource(url:string) {
+  async getResource(url:string):Promise<IProduct[] | IUser[]> {
     const res = await fetch(`${this._apiBase}${url}`);
 
     if (!res.ok) {
@@ -13,14 +22,11 @@ export default class AstService {
   }
 
   async getAllProducts() {
-    return await this.getResource('/products')
+    return await this.getResource('/products') as IProduct[]
 
   }
-  async getSingleProduct(id: number) {
-    return await this.getResource(`/products/${id}`)
-
-  }
-  async getAllUsers() {
-    return await this.getResource('/users')
+  
+  async getAllUsers(){
+    return await this.getResource('/users') as IUser[]
   }
 }

@@ -1,7 +1,7 @@
 import { IAction } from '../actions/actions';
 
 
-const initialState = {
+const initialState:IStore = {
   products: [],
   loading: true,
   error: false,
@@ -63,7 +63,7 @@ const reducer = (state:IStore = initialState, action:IAction):IStore => {
       const [id, quantity] = action.payload as [number, number];
       const itemInd = state.itemsInCart?.findIndex(item => item.id === id);
 
-      if (itemInd! >= 0 ) {
+      if (itemInd >= 0 ) {
         const elemInState = state.itemsInCart?.find(item => item.id === id);
         const newElem = {
           ...elemInState,
@@ -106,9 +106,9 @@ const reducer = (state:IStore = initialState, action:IAction):IStore => {
 
       const itemIndex = state.itemsInCart.findIndex(item => item.id === idx);
       const itemDel = state.itemsInCart.find(item => item.id === idx);
-      // if(itemIndex === -1){
-      //   return state;
-      // }
+      if(itemIndex === -1){
+        return state;
+      }
       return {
         ...state,
         itemsInCart: [
