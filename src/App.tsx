@@ -6,8 +6,7 @@ import About from './routes/About/About.component';
 import ItemPage from './routes/ItemPage/ItemPage.component';
 import CartPage from './routes/CartPage/CartPage.component';
 
-
-function App() {
+const App = () => {
   return (
     <Routes>
       <Route path='/' element={<Navigation />}>

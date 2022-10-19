@@ -1,73 +1,80 @@
-const menuLoaded = (newMenu) => {
+import { IProduct } from '../reducers/reducer';
+
+export interface IAction {
+  type:string,
+  payload?: IProduct[]|[number, number]|number
+}
+
+const menuLoaded = (newMenu:IProduct[]):IAction => {
   return {
     type: "MENU_LOADED",
     payload: newMenu
   }
 };
 
-const menuRequested = () => {
+const menuRequested = ():IAction => {
   return {
     type: "MENU_REQUESTED",
   }
 };
 
-const menuError = () => {
+const menuError = ():IAction => {
   return {
     type: "MENU_ERROR",
   }
 };
 
-const onAddToCart = (id, quantity = 1) => {
+const onAddToCart = (id:number, quantity:number = 1):IAction => {
   return {
     type: "ITEM_ADD_TO_CART",
     payload: [id, quantity]
   };
 };
 
-const deleteFromCart = (id) => {
+const deleteFromCart = (id:number):IAction => {
   return {
     type: "ITEM_REMOVE_FROM_CART",
     payload: id
   };
 };
 
-const clearCart = () => {
+const clearCart = ():IAction => {
   return {
     type: "CLEAR_CART"
   }
 }
 
-const completeOrder = () => {
+const completeOrder = ():IAction => {
   return {
     type: "ORDER_COMPLETED",
   }
 };
 
-const getAuthRequest = () => {
+const getAuthRequest = ():IAction => {
   return {
     type: "GET_AUTH_REQUEST"
   }
 }
 
-const getAuth = () => {
+const getAuth = ():IAction => {
   return {
     type: "GET_AUTH"
   }
 }
 
-const getAuthAdmin = () => {
+const getAuthAdmin = ():IAction => {
   return {
     type: "GET_ADMIN_AUTH"
   }
 }
 
-const getAuthReject = () => {
+const getAuthReject = ():IAction => {
   return {
     type: "GET_AUTH_REJECT"
   }
 }
 
-const exitAuth = () => {
+const exitAuth = ():IAction => {
   return {
     type: "EXIT_AUTH"
   }

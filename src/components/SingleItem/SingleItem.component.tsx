@@ -1,4 +1,4 @@
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import {
   menuLoaded,
   menuRequested,
@@ -11,9 +11,17 @@ import { useEffect, useRef } from "react";
 import WithAstService from "../../hoc/with-ast-service.hoc";
 import Loading from "../../components/Loading/Loading.component";
 import SingleItemAdmin from "./SingleItemAdmin.component";
+import { IProduct, IStore } from '../../redux/reducers/reducer';
+import AstService from '../../services/ast-shop-service';
 
-const SingleItem = (props) => {
-  const quantityInputRef = useRef();
+export type PropsFromRedux = ConnectedProps<typeof connector>;
+
+interface Props extends PropsFromRedux{
+    AstService:AstService
+}
+
+const SingleItem = (props:Props) => {
+  const quantityInputRef = useRef<HTMLInputElement>(null);
   const paramId = useParams().id;
 
   const {
@@ -38,8 +46,8 @@ const SingleItem = (props) => {
     }
   }, [AstService, menuError, menuLoaded, menuRequested, products.length]);
 
-  const item = products.find((el) => +el.id === +paramId);
-  const { title, image, category, price, id, description } = item;
+  const item  = products.find((el) => +el.id === Number(paramId));
+  const { title, image, category, price, id, description } = item as IProduct;
 
   const content = loading ? (
     <div className="item_page">
@@ -47,7 +55,7 @@ const SingleItem = (props) => {
     </div>
   ) : admin ? (
     <SingleItemAdmin
-      item={item}
+      item={item as IProduct}
       onAddToCart={onAddToCart}
       quantityInputRef={quantityInputRef}
     />
@@ -76,7 +84,7 @@ const SingleItem = (props) => {
                 />
               </div>
               <button
-                onClick={() => onAddToCart(id, quantityInputRef.current.value)}
+                onClick={() => onAddToCart(id, Number(quantityInputRef.current?.value))}
                 className="item-page-btn"
               >
                 Добавить в корзину
@@ -93,7 +101,7 @@ const SingleItem = (props) => {
   return <>{content}</>;
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state:IStore) => {
   return {
     products: state.products,
     loading: state.loading,
@@ -110,6 +118,8 @@ const mapDispatchToProps = {
   onAddToCart,
 };
 
+const connector = connect(mapStateToProps, mapDispatchToProps)
+
 export default WithAstService()(
-  connect(mapStateToProps, mapDispatchToProps)(SingleItem)
+  connector(SingleItem)
 );

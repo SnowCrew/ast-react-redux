@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import {
   menuRequested,
   menuLoaded,
@@ -10,8 +10,17 @@ import WithAstService from "../../hoc/with-ast-service.hoc";
 import ProductItem from "../productItem/ProductItem.component";
 import "./Shop.styles.css";
 import Loading from "../Loading/Loading.component";
+import { IProduct, IStore } from '../../redux/reducers/reducer';
+import AstService from '../../services/ast-shop-service';
 
-const Shop = (props) => {
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+interface Props extends PropsFromRedux{
+  product?:IProduct
+  AstService:AstService
+}
+
+const Shop = (props:Props) => {
   const {
     menuLoaded,
     menuError,
@@ -49,7 +58,7 @@ const Shop = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state:IStore) => {
   return {
     products: state.products,
     loading: state.loading,
@@ -65,6 +74,8 @@ const mapDispatchToProps = {
   onAddToCart,
 };
 
+const connector = connect(mapStateToProps, mapDispatchToProps)
+
 export default WithAstService()(
-  connect(mapStateToProps, mapDispatchToProps)(Shop)
+  connector(Shop)
 );

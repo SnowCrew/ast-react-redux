@@ -1,6 +1,7 @@
+import { IAction } from '../actions/actions';
 
 
-const initialState = {
+const initialState:IStore = {
   products: [],
   loading: true,
   error: false,
@@ -11,12 +12,36 @@ const initialState = {
   admin: false
 };
 
-const reducer = (state = initialState, action) => {
+export interface IProduct {
+  id: number,
+  title:string,
+  price:number,
+  category:string,
+  description:string,
+  image:string
+}
+
+export interface IProductInCart extends IProduct {
+counterIdentical:number,
+}
+
+export interface IStore {
+  products: IProduct[],
+  loading: boolean,
+  error: boolean,
+  itemsInCart: IProductInCart[],
+  total: number,
+  totalQuantity: number,
+  auth: boolean,
+  admin: boolean
+};
+
+const reducer = (state:IStore = initialState, action:IAction):IStore => {
   switch (action.type) {
     case 'MENU_LOADED':
       return {
         ...state,
-        products: action.payload,
+        products: action.payload as IProduct[],
         loading: false,
         error: false
       };
@@ -35,35 +60,36 @@ const reducer = (state = initialState, action) => {
         error: true
       };
     case "ITEM_ADD_TO_CART":
-      const [id, quantity] = action.payload;
-      const itemInd = state.itemsInCart.findIndex(item => item.id === id);
+      const [id, quantity] = action.payload as [number, number];
+      const itemInd = state.itemsInCart?.findIndex(item => item.id === id);
 
-      if (itemInd >= 0) {
-        const elemInState = state.itemsInCart.find(item => item.id === id);
+      if (itemInd >= 0 ) {
+        const elemInState = state.itemsInCart?.find(item => item.id === id);
         const newElem = {
           ...elemInState,
-          counterIdentical: (Number(elemInState.counterIdentical) + Number(quantity)),
+          counterIdentical: (Number(elemInState?.counterIdentical) + Number(quantity)),
         }
         return {
           ...state,
           itemsInCart: [
-            ...state.itemsInCart.slice(0, itemInd),
+            ...state.itemsInCart!.slice(0, itemInd),
             newElem,
-            ...state.itemsInCart.slice(itemInd + 1)
-          ],
-          total: ((Number(state.total) + (Number(newElem.price) * Number(quantity))).toFixed(2)),
+            ...state.itemsInCart!.slice(itemInd! + 1)
+          ] as IProductInCart[],
+          total: Number((Number(state.total) + (Number(newElem.price) * Number(quantity))).toFixed(2)),
           totalQuantity: Number(state.totalQuantity) + Number(quantity)
         }
       }
 
       const item = state.products.find(item => item.id === id);
-      const newItem = {
-        title: item.title,
-        price: item.price,
-        image: item.image,
-        id: item.id,
-        counterIdentical: Number(quantity),
-        totalQuantity: Number(quantity)
+      const newItem:IProductInCart = {
+        title: item!.title,
+        price: item!.price,
+        image: item!.image,
+        id: item!.id,
+        category:item!.category,
+        description: item!.description,
+        counterIdentical: Number(quantity)
       }
       return {
         ...state,
@@ -71,22 +97,26 @@ const reducer = (state = initialState, action) => {
           ...state.itemsInCart,
           newItem
         ],
-        total: (Number(state.total) + (Number(newItem.price) * Number(quantity))).toFixed(2),
+        total: Number(((state.total) + (Number(newItem.price) * Number(quantity))).toFixed(2)),
         totalQuantity: Number(state.totalQuantity) + Number(quantity)
       };
 
     case "ITEM_REMOVE_FROM_CART":
-      const idx = action.payload;
+      const idx = action.payload as number;
+
       const itemIndex = state.itemsInCart.findIndex(item => item.id === idx);
       const itemDel = state.itemsInCart.find(item => item.id === idx);
+      if(itemIndex === -1){
+        return state;
+      }
       return {
         ...state,
         itemsInCart: [
           ...state.itemsInCart.slice(0, itemIndex),
           ...state.itemsInCart.slice(itemIndex + 1)
         ],
-        total: (state.total - (itemDel.price * itemDel.counterIdentical)).toFixed(2),
-        totalQuantity: Number(state.totalQuantity) - itemDel.counterIdentical
+        total: Number((state.total - (itemDel!.price * itemDel!.counterIdentical)).toFixed(2)),
+        totalQuantity: Number(state.totalQuantity) - itemDel!.counterIdentical
       };
 
     case "CLEAR_CART":

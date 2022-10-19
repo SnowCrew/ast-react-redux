@@ -1,6 +1,13 @@
+import { ReactNode } from 'react';
 import "./ModalAuth.styles.css";
 
-const ModalAuth = ({ active, setActive, children }) => {
+interface IModalProps {
+  active:boolean,
+  setActive: (active: boolean) => void,
+  children: ReactNode|ReactNode[]
+}
+
+const ModalAuth = ({ active, setActive, children }:IModalProps) => {
   return (
     <div
       className={active ? "modal active" : "modal"}

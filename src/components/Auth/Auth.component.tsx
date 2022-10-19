@@ -1,7 +1,7 @@
 import "./Auth.styles.css";
 import { Link } from "react-router-dom";
 import WithAstService from "../../hoc/with-ast-service.hoc";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import { useState } from "react";
 import ModalAuth from "../ModalAuth/ModalAuth.component";
 import { useRef } from "react";
@@ -13,6 +13,15 @@ import {
   getAuthAdmin,
 } from "../../redux/actions/actions";
 import Loading from "../Loading/Loading.component";
+import { IStore } from '../../redux/reducers/reducer';
+import AstService from '../../services/ast-shop-service';
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+interface Props extends PropsFromRedux{
+  AstService:AstService,
+  CartIcon: string
+}
 
 const adminAccount = { email: "admin", password: "admin" };
 
@@ -26,18 +35,18 @@ const Auth = ({
   loading,
   getAuthAdmin,
   totalQuantity,
-}) => {
+}:Props) => {
   const [activeModalAuth, setActiveModalAuth] = useState(false);
-  const loginRef = useRef();
-  const passRef = useRef();
+  const loginRef = useRef<HTMLInputElement | null>(null);
+  const passRef = useRef<HTMLInputElement | null>(null);
 
   const handleGetAuth = async () => {
     getAuthRequest();
 
     //admin
     if (
-      adminAccount.email === loginRef.current.value &&
-      adminAccount.password === passRef.current.value
+      adminAccount.email === loginRef.current?.value &&
+      adminAccount.password === passRef.current?.value
     ) {
       getAuthAdmin();
       return;
@@ -47,8 +56,8 @@ const Auth = ({
     const users = await AstService.getAllUsers();
     const auth = users.some((item) => {
       if (
-        item.email === loginRef.current.value &&
-        item.password === passRef.current.value
+        item.email === loginRef.current?.value &&
+        item.password === passRef.current?.value
       ) {
         return true;
       } else {
@@ -69,13 +78,13 @@ const Auth = ({
   };
 
   const handleEnterAsUser = () => {
-    loginRef.current.value = "kate@gmail.com";
-    passRef.current.value = "kfejk@*_";
+    loginRef.current!.value = "kate@gmail.com";
+    passRef.current!.value = "kfejk@*_";
   };
 
   const handleEnterAsAdmin = () => {
-    loginRef.current.value = "admin";
-    passRef.current.value = "admin";
+    loginRef.current!.value = "admin";
+    passRef.current!.value = "admin";
   };
 
   const content = !auth ? (
@@ -141,7 +150,8 @@ const Auth = ({
   return <div className="auth-block">{content}</div>;
 };
 
-const mapStateToProps = ({ total, auth, loading, admin, totalQuantity }) => {
+
+const mapStateToProps = ({ total, auth, loading, admin, totalQuantity }:IStore) => {
   return {
     total,
     auth,
@@ -158,6 +168,9 @@ const mapDispatchToProps = {
   getAuthAdmin,
 };
 
+const connector = connect(mapStateToProps,mapDispatchToProps)
+
+
 export default WithAstService()(
-  connect(mapStateToProps, mapDispatchToProps)(Auth)
+  connector(Auth)
 );
