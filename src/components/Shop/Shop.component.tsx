@@ -7,40 +7,20 @@ import {
   onAddToCart,
 } from "../../redux/actions/actions";
 import WithAstService from "../../hoc/with-ast-service.hoc";
-import ProductItem from "../productItem/ProductItem.component";
 import "./Shop.styles.css";
-import Loading from "../Loading/Loading.component";
-import { IProduct, IStore } from '../../redux/reducers/reducer';
-import AstService from '../../services/ast-shop-service';
+import { IProduct, IStore } from "../../redux/reducers/reducer";
+import AstService from "../../services/ast-shop-service";
+import ShopContent from "./ShopContent.component";
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
+type ShopPropsFromRedux = ConnectedProps<typeof connector>;
 
-interface Props extends PropsFromRedux{
-  product?:IProduct
-  AstService:AstService
+export interface ShopProps extends ShopPropsFromRedux {
+  product?: IProduct;
+  AstService: AstService;
 }
 
-const Shop = (props:Props) => {
-  const {
-    menuLoaded,
-    menuError,
-    AstService,
-    menuRequested,
-    products,
-    loading,
-    onAddToCart,
-  } = props;
-
-  const spinner = loading ? <Loading /> : null;
-  const content = !loading ? (
-    <ul className="menu__list">
-      {products.map((item) => {
-        return (
-          <ProductItem key={item.id} product={item} onAddToCart={onAddToCart} />
-        );
-      })}
-    </ul>
-  ) : null;
+const Shop = (props: ShopProps) => {
+  const { menuLoaded, menuError, AstService, menuRequested } = props;
 
   useEffect(() => {
     menuRequested();
@@ -52,13 +32,12 @@ const Shop = (props:Props) => {
 
   return (
     <>
-      {spinner}
-      {content}
+      <ShopContent {...props} />
     </>
   );
 };
 
-const mapStateToProps = (state:IStore) => {
+const mapStateToProps = (state: IStore) => {
   return {
     products: state.products,
     loading: state.loading,
@@ -74,8 +53,6 @@ const mapDispatchToProps = {
   onAddToCart,
 };
 
-const connector = connect(mapStateToProps, mapDispatchToProps)
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
-export default WithAstService()(
-  connector(Shop)
-);
+export default WithAstService()(connector(Shop));

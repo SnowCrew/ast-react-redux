@@ -2,7 +2,6 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Create React App",
 
-
   "compilerOptions": {
     "lib": ["es5", "es6", "dom", "dom.iterable"],
     "module": "esnext",
@@ -26,9 +25,9 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.svg",
-    "src/components", "src/custom.d.ts"
+    "src/components",
+    "src/custom.d.ts",
+    "setupTests.d.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

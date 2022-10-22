@@ -6,10 +6,12 @@ import store from "./redux/store/store";
 import AstServiceContext from "./context/ast-service-context";
 import { BrowserRouter } from "react-router-dom";
 import AstService from "./services/ast-shop-service";
-import App from './App';
+import App from "./App";
 
-const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-const astService = new AstService();
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+export const astService = new AstService();
 
 root.render(
   <React.StrictMode>

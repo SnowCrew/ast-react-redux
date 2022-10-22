@@ -5,10 +5,9 @@ import {
   onAddToCart,
   clearCart,
 } from "../../redux/actions/actions";
-import { IStore } from '../../redux/reducers/reducer';
+import { IStore } from "../../redux/reducers/reducer";
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
+export type CartTablePropsFromRedux = ConnectedProps<typeof connector>;
 
 const CartTable = ({
   itemsInCart,
@@ -16,8 +15,7 @@ const CartTable = ({
   onAddToCart,
   clearCart,
   total,
-  }:PropsFromRedux) => {
-
+}: CartTablePropsFromRedux) => {
   const handleClearCart = () => {
     clearCart();
   };
@@ -54,20 +52,31 @@ const CartTable = ({
                   >
                     +
                   </button>
-                  <div className="cart__item-counter-count">
+                  <div
+                    className="cart__item-counter-count"
+                    data-testid={"item-counter-count"}
+                  >
                     {counterIdentical}
                   </div>
                   <button
+                    data-testid={"decrease_button"}
                     className="cart__item-counter-btn minus"
                     onClick={handleRemoveCounter}
                   >
                     -
                   </button>
                 </div>
-                <div className="cart__item-price">
+                <div
+                  className="cart__item-price"
+                  data-testid={"total-price-item-counter-count"}
+                >
                   Total: {(counterIdentical * price).toFixed(2)}$
                 </div>
-                <div onClick={() => deleteFromCart(id)} className="cart__close">
+                <div
+                  onClick={() => deleteFromCart(id)}
+                  className="cart__close"
+                  data-testid={"remove_button"}
+                >
                   &times;
                 </div>
               </div>
@@ -77,14 +86,16 @@ const CartTable = ({
           <button className="cart__btn" disabled>
             Оплатить
           </button>
-          <button onClick={handleClearCart}>Очистить корзину</button>
+          <button onClick={handleClearCart} data-testid={"clear_cart_button"}>
+            Очистить корзину
+          </button>
         </div>
       </div>
     );
   }
 };
 
-const mapStateToProps = ({ itemsInCart, total }:IStore) => {
+const mapStateToProps = ({ itemsInCart, total }: IStore) => {
   return {
     itemsInCart,
     total,
@@ -97,7 +108,6 @@ const mapDispatchToProps = {
   clearCart,
 };
 
-const connector = connect(mapStateToProps,mapDispatchToProps)
-
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 export default connector(CartTable);
